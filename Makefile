@@ -1,19 +1,16 @@
 
-VERSION := 3.1.8-2020-03-04-e5981d10b
+VERSION := 3.1.8-2020-05-01-05516d846
 
 all: build 
 
 pull:
-	docker pull kalemena/connectiq:$(VERSION)
+	docker pull cti/connectiq:$(VERSION)
 
 build:
 	@echo "+++ Building docker image +++"
 	docker pull ubuntu:18.04
-	docker build --build-arg VERSION=$(VERSION) -t kalemena/connectiq:$(VERSION) .
-	docker tag kalemena/connectiq:$(VERSION) kalemena/connectiq:latest
+	docker build --build-arg VERSION=$(VERSION) -t cti/connectiq:$(VERSION) .
+	docker tag cti/connectiq:$(VERSION) cti/connectiq:latest
 
-console:
-	bash ./run.sh
-
-eclipse:
-	COMMAND=/opt/eclipse/eclipse bash ./run.sh
+build-proj:
+	docker run --rm -v `pwd`:/project cti/connectiq:latest bash -c 'cd /project; chmod +x gradlew; ./gradlew build'
